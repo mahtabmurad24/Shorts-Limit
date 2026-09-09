@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shorts Limit</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <h1 class="brand-title">Shorts Limit</h1>
+      </div>
+      <label class="switch" title="Enable / Disable Shorts Limit">
+        <input type="checkbox" id="toggle-enabled" checked>
+        <span class="slider"></span>
+      </label>
+    </header>
+
+    <!-- Today's Progress Card -->
+    <section class="card progress-card">
+      <div class="card-header">
+        <span class="card-subtitle">TODAY'S ACTIVITY</span>
+        <span id="badge-status" class="status-badge active">Active</span>
+      </div>
+
+      <!-- Time Usage -->
+      <div class="stat-group">
+        <div class="stat-meta">
+          <span class="stat-label">Watch Time</span>
+          <span class="stat-fraction" id="time-display">00:00 / 15:00</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="time-progress" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Shorts Views -->
+      <div class="stat-group">
+        <div class="stat-meta">
+          <span class="stat-label">Shorts Watched</span>
+          <span class="stat-fraction" id="shorts-display">0 / 30</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="shorts-progress" style="width: 0%"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Settings Section -->
+    <section class="card settings-card">
+      <div class="settings-header-row">
+        <h2 class="section-title">Daily Restrictions</h2>
+      </div>
+
+      <!-- Restriction Mode Selector -->
+      <div class="mode-selector-group">
+        <div class="mode-label-row">
+          <span class="setting-title">Enforce Limits</span>
+          <span class="mode-active-summary" id="mode-summary">Both Active</span>
+        </div>
+        <div class="mode-toggle-grid" id="mode-selector">
+          <button class="mode-btn active" data-mode="both">Both Together</button>
+          <button class="mode-btn" data-mode="time">Time Only</button>
+          <button class="mode-btn" data-mode="shorts">Shorts Only</button>
+        </div>
+      </div>
+
+      <!-- Time Limit Presets -->
+      <div class="setting-item" id="time-setting-item">
+        <div class="setting-label-row">
+          <span class="setting-title">
+            Daily Time Limit
+            <span class="inactive-tag hidden" id="time-inactive-tag">Inactive</span>
+          </span>
+          <span class="current-limit-val" id="current-time-label">15 min</span>
+        </div>
+        <div class="preset-grid" id="time-presets">
+          <button class="preset-btn" data-time="300">5m</button>
+          <button class="preset-btn" data-time="600">10m</button>
+          <button class="preset-btn active" data-time="900">15m</button>
+          <button class="preset-btn" data-time="1200">20m</button>
+          <button class="preset-btn" data-time="1800">30m</button>
+          <button class="preset-btn custom-toggle" id="time-custom-toggle">Custom</button>
+        </div>
+        <div class="custom-input-row hidden" id="time-custom-row">
+          <input type="number" id="time-custom-input" min="1" max="720" placeholder="Minutes">
+          <button class="btn-save-custom" id="time-custom-save">Set</button>
+        </div>
+      </div>
+
+      <!-- Shorts Limit Presets -->
+      <div class="setting-item" id="shorts-setting-item">
+        <div class="setting-label-row">
+          <span class="setting-title">
+            Daily Shorts Limit
+            <span class="inactive-tag hidden" id="shorts-inactive-tag">Inactive</span>
+          </span>
+          <span class="current-limit-val" id="current-shorts-label">30 Shorts</span>
+        </div>
+        <div class="preset-grid" id="shorts-presets">
+          <button class="preset-btn" data-shorts="10">10</button>
+          <button class="preset-btn" data-shorts="20">20</button>
+          <button class="preset-btn active" data-shorts="30">30</button>
+          <button class="preset-btn" data-shorts="50">50</button>
+          <button class="preset-btn" data-shorts="100">100</button>
+          <button class="preset-btn custom-toggle" id="shorts-custom-toggle">Custom</button>
+        </div>
+        <div class="custom-input-row hidden" id="shorts-custom-row">
+          <input type="number" id="shorts-custom-input" min="1" max="1000" placeholder="Count">
+          <button class="btn-save-custom" id="shorts-custom-save">Set</button>
+        </div>
+      </div>
+
+      <!-- Reset Today's Usage -->
+      <div class="reset-row">
+        <button class="btn-secondary" id="btn-reset-usage">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+          </svg>
+          Reset Today's Usage
+        </button>
+      </div>
+    </section>
+
+    <!-- Emergency Access Section (Visually Separated) -->
+    <section class="card emergency-card" id="emergency-section">
+      <div class="emergency-header">
+        <span class="emergency-tag">OVERRIDE</span>
+        <h3 class="emergency-title">Emergency Access</h3>
+      </div>
+      <p class="emergency-desc" id="emergency-desc">
+        Need temporary access to Shorts?
+      </p>
+      <button class="btn-emergency" id="btn-emergency-unlock">
+        Emergency Unlock
+      </button>
+    </section>
+
+    <!-- Reset Confirmation Modal -->
+    <div class="modal-backdrop hidden" id="reset-modal">
+      <div class="modal-dialog">
+        <h4 class="modal-title">Reset Usage?</h4>
+        <p class="modal-body">This will reset your watch time and Shorts view count for today back to zero.</p>
+        <div class="modal-actions">
+          <button class="btn-dialog-cancel" id="btn-cancel-reset">Cancel</button>
+          <button class="btn-dialog-danger" id="btn-confirm-reset">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Emergency Unlock Confirmation Modal -->
+    <div class="modal-backdrop hidden" id="emergency-modal">
+      <div class="modal-dialog">
+        <h4 class="modal-title">Emergency Unlock</h4>
+        <p class="modal-body">
+          You've reached today's Shorts restriction.
+          Emergency access will allow Shorts again for the rest of today, while your usage continues to be tracked.
+        </p>
+        <div class="modal-actions">
+          <button class="btn-dialog-cancel" id="btn-cancel-emergency">Cancel</button>
+          <button class="btn-dialog-confirm" id="btn-confirm-emergency">Unlock for Today</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

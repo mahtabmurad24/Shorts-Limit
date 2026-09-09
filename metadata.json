@@ -1,0 +1,6 @@
+{
+  "name": "Shorts Limit - Chrome Extension",
+  "description": "A Manifest V3 Chrome Extension to limit YouTube Shorts by daily time and view count with companion simulator.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
